@@ -1,0 +1,14 @@
+{
+  "name": "tasks",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "rocket",
+  "main": "index.js",
+  "repository": "git@github.com:RicardoGorki/tasks.git",
+  "author": "Ricardo Gorki <ricardo.gorki@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node --watch srcs/server.js"
+  },
+  "dependencies": {}
+}
