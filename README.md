@@ -11,6 +11,7 @@ Espero que, com o tempo, eu possa retonar a esse desafio e coloca-lo de maneira 
 ## Executar
 
 > yarn
+
 > yarn dev
 
 importar Insomnia_2023-09-30.json no insomnia
