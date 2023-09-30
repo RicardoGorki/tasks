@@ -10,5 +10,8 @@
   "scripts": {
     "dev": "node --watch srcs/server.js"
   },
-  "dependencies": {}
+  "dependencies": {
+    "csv-parse": "^5.5.0",
+    "url": "^0.11.3"
+  }
 }

@@ -2,6 +2,11 @@ import { randomUUID } from "node:crypto";
 import { Database } from "./database.js";
 import formatDateToJson from "./utils/formats.js";
 import { buildRoutePath } from "./utils/build-route-path.js";
+import fs from "node:fs";
+import { dirname } from "path";
+
+import { parse } from "csv-parse";
+import { fileURLToPath } from "url";
 
 const database = new Database();
 
@@ -55,6 +60,44 @@ export const routes = [
 
       database.insert("tasks", task);
       return response.writeHead(201).end();
+    },
+  },
+  {
+    method: "POST",
+    path: buildRoutePath("/tasks/import"),
+    handler: async (request, response) => {
+      const __dirname = dirname(fileURLToPath(import.meta.url));
+      const processFile = async () => {
+        const records = [];
+        const parser = fs.createReadStream(`${__dirname}/input.csv`).pipe(
+          parse({
+            delimiter: ",",
+            skip_empty_lines: true,
+            from_line: 2,
+          })
+        );
+
+        for await (const record of parser) {
+          database.insert("tasks", {
+            id: randomUUID(),
+            title: record[0],
+            description: record[1],
+            completed_at: null,
+            created_at: new Date(),
+            updated_at: null,
+          });
+          records.push(record);
+        }
+        return records;
+      };
+
+      (async () => {
+        await processFile();
+      })();
+
+      return response
+        .writeHead(200, { "Content-Type": "multipart/form-data" })
+        .end();
     },
   },
   {
